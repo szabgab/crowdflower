@@ -207,6 +207,18 @@ class Job(object):
         self._cache.remove(keyfunc(self, 'units'))
         return res
 
+    def ping(self):
+        '''
+        Determine the status of a job.
+
+        Returns a data structure like this:
+        {u'all_units': 3, u'completed_non_gold_estimate': 3, u'needed_judgments': 0, u'tainted_judgments': 0, u'completed_gold_estimate': 0, u'all_judgments': 3, u'golden_units': 0, u'completed_units_estimate': 3, u'ordered_units': 3}
+        '''
+
+        headers = {'Content-Type': 'application/json'}
+        res = self._connection.request('/jobs/%s/ping' % self.id, method='GET', headers=headers)
+        return res
+
     def delete(self):
         '''
         Deletes the entire job permanently

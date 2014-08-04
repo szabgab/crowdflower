@@ -86,10 +86,17 @@ Create a new job with some new units:
             # {u'message': {u'success': u'Job 552771 has been deleted.'}}
 
 
-    # To launch a job for internal workers:
+    # To launch a job for internal workers (sandbox):
     res = job.launch(mode='cf_internal', units_count=2)
     # To launch a job for on-demand workers:
     res = job.launch(mode='on_demand', units_count=2)
+
+    # To get the status of a job:
+    print job.ping()
+
+    # To download the results of a job write this:
+    for row in job.download():
+        print row
 
 
 ## Debugging/Logging
