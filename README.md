@@ -73,6 +73,13 @@ Create a new job with some new units:
 
     print job
 
+    # delete all the jobs that were created by the above sample code:
+    for job in conn.jobs():
+        if job.properties['title'] == 'Gender labels':
+            print("Deleting " + str(job.id))
+            res = job.delete()
+            print res
+            # {u'message': {u'success': u'Job 552771 has been deleted.'}}
 
 ## Motivation
 
