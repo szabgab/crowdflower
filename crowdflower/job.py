@@ -108,7 +108,7 @@ class Job(object):
 
         Automatically cached.
         '''
-        self._connection.request('/jobs/%s/units' % self.id)
+        return self._connection.request('/jobs/%s/units' % self.id)
 
     def delete_unit(self, unit_id):
         response = self._connection.request('/jobs/%s/units/%s' % (self.id, unit_id), method='DELETE')
