@@ -23,8 +23,9 @@ Import:
     import crowdflower
 
 CrowdFlower API keys are 20 characters long; the one below is just random characters.
+You can get your API key from: https://make.crowdflower.com/account/user
 
-    conn = crowdflower.Connection('LbcxvIlE3x1M8F6TT5hN')
+    conn = crowdflower.Connection(api_key='LbcxvIlE3x1M8F6TT5hN')
 
 The library will default to an environment variable called `CROWDFLOWER_API_KEY` if
 none is specified here:
@@ -53,17 +54,21 @@ Create a new job with some new units:
         {'id': '3', 'name': 'Maisy Ester'},
     ]
     job = conn.upload(data)
-    job.update({
+    res = job.update({
         'title': 'Gender labels',
         'included_countries': ['US', 'GB'],  # Limit to the USA and United Kingdom
         'payment_cents': 5,
         'judgments_per_unit': 2,
-        'instructions': <some instructions html>,
-        'cml': <some layout cml>,
+        'instructions': 'some instructions html',
+        'cml': 'some layout cml: <cml:text label="Sample text field:" validates="required" />',
         'options': {
             'front_load': 1, # quiz mode = 1; turn off with 0
         }
     })
+    if 'errors' in res:
+        print(res['errors'])
+        exit()
+
     job.gold_add('gender', 'gender_gold')
 
     print job
