@@ -26,3 +26,10 @@ class CrowdFlowerJSONError(CrowdFlowerError):
         self.request = request
         self.response = response
         self.json_error = json_error
+
+class CrowdFlowerParamError(CrowdFlowerError):
+     def __init__(self, text):
+         self.text = text
+
+     def __str__(self):
+         return self.text

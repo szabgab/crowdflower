@@ -57,6 +57,10 @@ Create a new job with some new units:
     res = job.update({
         'title': 'Gender labels',
         'included_countries': ['US', 'GB'],  # Limit to the USA and United Kingdom
+                 # Please note, if you are located in another country and you would like
+                 # to experiment with the sandbox (internal workers) then you also need to add
+                 # your own country. Otherwise your submissions as internal worker will be rejected
+                 # with Error 301 (low quality).
         'payment_cents': 5,
         'judgments_per_unit': 2,
         'instructions': 'some instructions html',
@@ -80,6 +84,20 @@ Create a new job with some new units:
             res = job.delete()
             print res
             # {u'message': {u'success': u'Job 552771 has been deleted.'}}
+
+
+    # To launch a job for internal workers:
+    res = job.launch(mode='cf_internal', units_count=2)
+    # To launch a job for on-demand workers:
+    res = job.launch(mode='on_demand', units_count=2)
+
+
+## Debugging/Logging
+
+In order to turn on logging use the following in your script:
+
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
 
 ## Motivation
 

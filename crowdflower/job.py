@@ -4,6 +4,7 @@ import zipfile
 from pprint import pformat
 from cStringIO import StringIO
 
+from crowdflower.exception import CrowdFlowerParamError
 from crowdflower import logger
 from crowdflower.cache import cacheable, keyfunc
 from crowdflower.serialization import rails_params
@@ -116,9 +117,23 @@ class Job(object):
         self._cache.remove(keyfunc(self, 'units'))
         return response
 
+    def launch(self, mode, units_count):
+        '''
+        mode='cf_internal'   or mode='on_demand'
+        units_count=100
+        '''
+        if mode not in  ['cf_internal', 'on_demand']:
+            raise CrowdFlowerParamError('Invalid mode')
+
+        headers = {'Content-Type': 'application/json'}
+        data = { "channels[0]": mode, "debit[units_count]" : str(units_count)}
+        res = self._connection.request('/jobs/%s/orders' % self.id, method='POST', headers=headers, params=data)
+        return res
+
     def upload(self, units):
         headers = {'Content-Type': 'application/json'}
         data = '\n'.join(json.dumps(unit) for unit in units)
+        logger.debug('Upload data: {}'.format(data))
         res = self._connection.request('/jobs/%s/upload' % self.id, method='POST', headers=headers, data=data)
 
         # reset cached units
